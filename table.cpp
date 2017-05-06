@@ -165,8 +165,10 @@ int Table::deck2Table(int to){
         return 1;
     tableau[to].insert(deckLast());
     tableau[to].getLast()->setFace(true);
-    deck.pop_back();
 
+    std::cout << "deck pred: " <<  deck.size();
+    deck.pop_back();
+    std::cout<< " deck po: " << deck.size() << "\n";
     return 0;
 }
 
@@ -188,9 +190,9 @@ int Table::deck2Found(){
             foundation[3].getLast()->setFace(true);
             break;
     }
-
+    std::cout << "deck pred: " <<  deck.size();
     deck.pop_back();
-
+    std::cout<< " deck po: " << deck.size() << "\n";
     return 0;
 }
 
@@ -198,8 +200,6 @@ int Table::table2Table(int to, int from) {
     if (tableau[from].empty())
         return 1;
 
-    tableau[to].getLast()->Print();
-    tableau[from].getLast()->Print();
     if (tableRule(tableau[to].getLast(), tableau[from].getLast()) == 1){
         return 1;
     }
@@ -212,12 +212,14 @@ int Table::table2Table(int to, int from) {
 }
 
 int Table::table2Found(int from) {
+    std::cout << "tu?\n";
     if (tableau[from].empty()){
        return 1;
     }
+    std::cout << "tu?   2\n";
     if (foundRule(tableau[from].getLast()) == 1)
         return 1;
-
+std::cout << "tu?   3\n";
     switch(Suiting(tableau[from].getLast()->GetSuit())){
         case 0: foundation[0].insert(tableau[from].getLast());
             foundation[0].getLast()->setFace(true);
@@ -232,9 +234,10 @@ int Table::table2Found(int from) {
             foundation[3].getLast()->setFace(true);
             break;
     }
-
+std::cout << "tu?   4\n";
     tableau[from].pop();
-    tableau[from].getLast()->setFace(true);
+    if (!tableau[from].empty())
+        tableau[from].getLast()->setFace(true);
 
     return 0;
 }

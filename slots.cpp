@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "table.h"
 
+/*********************************************************/
+/*                  karta z decku                        */
+/*********************************************************/
 void MainWindow::on_deck_face_clicked(){
     clicked.button = ui->deck_face;
     clicked.card   = tab.deckLast();
@@ -10,7 +13,40 @@ void MainWindow::on_deck_face_clicked(){
     clicked.position = -1;
     cardClicked();}
 
-//takychto funkcii treba spravit milion (pre kazdy button) << //TODO
+/*********************************************************/
+/*                  foudation karty                      */
+/*********************************************************/
+void MainWindow::on_foundation1_clicked(){
+    clicked.button = ui->foundation1;
+    clicked.card   = tab.getFoundLast(0);
+    clicked.where  = 1;
+    clicked.pile   = -1;
+    clicked.position = -1;
+    cardClicked();}
+void MainWindow::on_foundation2_clicked(){
+    clicked.button = ui->foundation2;
+    clicked.card   = tab.getFoundLast(1);
+    clicked.where  = 1;
+    clicked.pile   = -1;
+    clicked.position = -1;
+    cardClicked();}
+void MainWindow::on_foundation3_clicked(){
+    clicked.button = ui->foundation3;
+    clicked.card   = tab.getFoundLast(2);
+    clicked.where  = 1;
+    clicked.pile   = -1;
+    clicked.position = -1;
+    cardClicked();}
+void MainWindow::on_foundation4_clicked(){
+    clicked.button = ui->foundation4;
+    clicked.card   = tab.getFoundLast(3);
+    clicked.where  = 1;
+    clicked.pile   = -1;
+    clicked.position = -1;
+    cardClicked();}
+/*********************************************************/
+/*                  tableau karty                        */
+/*********************************************************/
 void MainWindow::on_table1_card_13_clicked(){
     clicked.button = ui->table1_card_13;
     clicked.card   = tab.getTableCard(0, 12);
@@ -96,6 +132,7 @@ void MainWindow::on_table1_card_2_clicked(){
     clicked.position = 1;
     cardClicked(); }
 void MainWindow::on_table1_card_1_clicked(){
+    std::cout << "???????????????????????????????????\n";
     clicked.button = ui->table1_card_1;
     clicked.card   = tab.getTableCard(0, 0);
     clicked.where  = 2;

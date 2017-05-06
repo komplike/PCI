@@ -17,21 +17,15 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow ::cardClicked(){
-    tab.print();
-    std::cout << clicked.where << clicked.pile << clicked.position << "\n";
+    std::cout << "cardClicked\n";
+////    tab.print();
+//    std::cout << "padam?";
+//    std::cout << clicked.where << clicked.pile << clicked.position << "------------------\n";
+//    std::cout << selected.where << selected.pile << selected.position << "------------------\n";
+//    std::cout << "?\n";
     if (selected.clicked) {
         //presuvame kartu z decku
-        std::cout << "slected\n";
-        if (selected.where == clicked.where){
-            if (selected.where != 2){
-            updateAll();
-            return;
-            }
-            else if (selected.pile == clicked.pile){
-                updateAll();
-                return;
-            }
-        }
+//        std::cout << "slected\n";
         if (selected.where == 0){
             fromDeck();
         }
@@ -69,80 +63,59 @@ void MainWindow ::cardClicked(){
 }
 
 int MainWindow::fromDeck(){
-    if (tab.deckRule() == 1){
-        std::cout << "ERR: bola vybrana prazdna karta z decku, nemalo by sa nikdy stat\n";
-        return 1; //tento stav nikdy nenastane asi ale aj tak
-    }
-    // deselectujeme kartu nastavime jej styleSheet
-    //TODO - pozriet sa kam kartu presuvame skontrolovat ci sa to da
+    std::cout << "fromDeck\n";
     if (clicked.where == 1){
         if (tab.deck2Found() != 0){
             std::cout << "karta sa neda polozit do foundation\n"; // TODO vytvorit funkciu deselect
             return 1;
         }
 
-//        updateDeck();
-//        updateFoundation();
-//        deselect();
         return 0;
     }
     if (clicked.where == 2){
-        //deselect
         if (tab.deck2Table(clicked.pile) != 0){
            std::cout<<"neda sa presunut\n";
            return 1;
         }
         return 0;
     }
-    //deselect ak clicked.where == 0
 // k inym konfiguraciam by nemalo nastat
-//    restore();
     return 1;
 }
 //TODO
 int MainWindow::fromFound(){
-    //deselect
+    std::cout << "fromFound\n";
     if (clicked.where != 2){
         std::cout << "z found sa da karta vlozit iba na found\n";
         return 1;
     }
 
-    if (tab.tableRule(selected.card, clicked.card) != 0){
+    if (tab.found2Table(selected.pile, clicked.pile) != 0){
         std::cout << "sem sa to vlozit neda\n";
         return 1;
     }
 
-    tab.found2Table(selected.pile, clicked.pile);
-    updateFoundation();
-    updateTable(clicked.pile+1);
-
-    deselect();
     return 0;
 }
 //TODO
 int MainWindow::fromTable(){
+    std::cout << "fromTable\n";
     if (clicked.where == 1){
         if (tab.foundRule(selected.card) != 0){
             std::cout << "karta sa neda presunut do foundation\n";
             return 1;
         }
-
         tab.table2Found(selected.pile);
-//        updateFoundation();
-//        updateTable(selected.pile);
-        deselect();
+        std::cout << "tu-2-2-?\n";
         return 0;
     }
     if (clicked.where == 2){
         //isClickedLast ak nie tak chyba
-        std::cout << "do:" << clicked.pile << " z: " << selected.pile << "\n";
+//        std::cout << "do:" << clicked.pile << " z: " << selected.pile << "\n";
         if (tab.table2Table(clicked.pile,selected.pile) != 0) {
             std::cout << "karta sa neda vlozit na kopu";
             return 1;
         }
-//        updateTable(selected.pile);
-//        updateTable(clicked.pile);
-        deselect();
         return 0;
     }
     return 1;
@@ -163,6 +136,7 @@ void MainWindow::on_newGame_clicked(){
 }
 
 void MainWindow::deselect(){
+    std::cout << "deselect\n";
     selected.button     = nullptr;
     selected.card       = nullptr;
     selected.clicked    = false;
@@ -173,6 +147,7 @@ void MainWindow::deselect(){
 
 void MainWindow::on_deck_back_clicked(){
     tab.dealCard();
+    deselect();
     updateDeck();
 }
 
@@ -216,85 +191,85 @@ void MainWindow::updateTable(unsigned num){
         if (i < tab.tableSize(num)){
             card = tab.getTableCard(num,i + start);
             if (card == nullptr){
-                if (i == 0) {
-                    table[i]->setStyleSheet(
-        //                "background: white;"
-                        "border-style: inset;"
-                        "border-width: 2px;"
-                        "border-color: red;"
-                        );
-                }
-                else
-                    return; //toto je interna chyba
+                return;
+            }
+            if (card->GetFace()){
+                table[i]->setStyleSheet(
+                    "border-image: url(:"+
+                    rank[Ranking(card->GetRank())]+of+
+                    suit[Suiting(card->GetSuit())]+");"
+                    "background: white;"
+                    "border-style: inset;"
+                    "border-width: 2px;"
+                    "border-color: red;"
+                );
+                table[i]->setEnabled(true);
             }
             else {
-                if (card->GetFace()){
-                    table[i]->setStyleSheet(
-                        "border-image: url(:"+
-                        rank[Ranking(card->GetRank())]+of+
-                        suit[Suiting(card->GetSuit())]+");"
-                        "background: white;"
-                        "border-style: inset;"
-                        "border-width: 2px;"
-                        "border-color: red;"
-                    );
-                    table[i]->setEnabled(true);
-                }
-                else {
-                    table[i]->setStyleSheet(
-                                "border-image: url(:"+back+");"
-                                "background: white;"
-                                "border-style: inset;"
-                                "border-width: 2px;"
-                                "border-color: red;"
-                    );
-                    table[i]->setEnabled(false);
-                }
+                table[i]->setStyleSheet(
+                            "border-image: url(:"+back+");"
+                            "background: white;"
+                            "border-style: inset;"
+                            "border-width: 2px;"
+                            "border-color: red;"
+                );
+                table[i]->setEnabled(false);
             }
             table[i]->show();
         }
         else {
-            table[i]->hide();
+            if (i == 0) {
+                table[i]->setStyleSheet(
+    //                "background: white;"
+                    "border-style: inset;"
+                    "border-width: 2px;"
+                    "border-color: red;"
+                    );
+                table[i]->setEnabled(true);
+                table[i]->show();
+            }
+            else
+                table[i]->hide();
         }
     }
 }
 
 // zobrazi deck podla stavu hry
 void MainWindow::updateDeck(){
-       if (Suiting(tab.deckLast()->GetSuit()) == 4){
-           ui->deck_face->setStyleSheet(
-                                       "border-style: inset;"
-                                       "border-width: 2px;"
-                                       "border-color: white;"
-                                       );
-           ui->deck_back->setStyleSheet(
-                       "border-image: url(:"+back+");"
-                       "background: white;"
-                       "border-style: inset;"
-                       "border-width: 2px;"
-                       "border-color: red;"
-           );
-           ui->deck_face->setEnabled(false);
-           return;
-       }
-       ui->deck_face->setEnabled(true);
-       if (Suiting(tab.deckFirst()->GetSuit()) == 4){
-           ui->deck_back->setStyleSheet(
-                       "border-style: inset;"
-                       "border-width: 2px;"
-                       "border-color: white;"
-                       );
-       }
-
+   if (Suiting(tab.deckLast()->GetSuit()) == 4){
        ui->deck_face->setStyleSheet(
-                   "border-image: url(:"+
-                   rank[Ranking(tab.deckLast()->GetRank())]+of+
-                   suit[Suiting(tab.deckLast()->GetSuit())]+");"
+                                   "border-style: inset;"
+                                   "border-width: 2px;"
+                                   "border-color: white;"
+                                   );
+       ui->deck_back->setStyleSheet(
+                   "border-image: url(:"+back+");"
                    "background: white;"
                    "border-style: inset;"
                    "border-width: 2px;"
                    "border-color: red;"
-               );
+       );
+       ui->deck_face->setEnabled(false);
+       return;
+   }
+   ui->deck_face->setEnabled(true);
+   if (Suiting(tab.deckFirst()->GetSuit()) == 4){
+       ui->deck_back->setStyleSheet(
+                   "border-style: inset;"
+                   "border-width: 2px;"
+                   "border-color: white;"
+                   );
+   }
+
+   ui->deck_face->setStyleSheet(
+               "border-image: url(:"+
+               rank[Ranking(tab.deckLast()->GetRank())]+of+
+               suit[Suiting(tab.deckLast()->GetSuit())]+");"
+               "background: white;"
+               "border-style: inset;"
+               "border-width: 2px;"
+               "border-color: red;"
+           );
 }
 
 // zobrazi karty vo foundation podla stavu hry

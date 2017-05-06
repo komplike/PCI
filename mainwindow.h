@@ -165,6 +165,11 @@ private slots:
     void on_newGame_clicked();
     void on_deck_back_clicked();
     void on_deck_face_clicked();
+
+    void on_foundation1_clicked();
+    void on_foundation2_clicked();
+    void on_foundation3_clicked();
+    void on_foundation4_clicked();
 };
 
 #endif // MAINWINDOW_H
