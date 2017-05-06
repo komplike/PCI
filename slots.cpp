@@ -1,5 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "table.h"
+
+void MainWindow::on_deck_face_clicked(){
+    clicked.button = ui->deck_face;
+    clicked.card   = tab.deckLast();
+    clicked.where  = 0;
+    clicked.pile   = -1;
+    clicked.position = -1;
+    cardClicked();}
+
 //takychto funkcii treba spravit milion (pre kazdy button) << //TODO
 void MainWindow::on_table1_card_13_clicked(){
     clicked.button = ui->table1_card_13;

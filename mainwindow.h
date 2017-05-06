@@ -37,7 +37,6 @@ private:
     void initUi();
     void cardClicked();
     void deselect();
-    void restore();
     int fromDeck();
     int fromFound();
     int fromTable();
@@ -165,6 +164,7 @@ private slots:
 
     void on_newGame_clicked();
     void on_deck_back_clicked();
+    void on_deck_face_clicked();
 };
 
 #endif // MAINWINDOW_H

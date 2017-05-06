@@ -46,6 +46,7 @@ void MainWindow ::cardClicked(){
         else {
             std::cout << "ERR: nie je spravne inicializovana vybrana karta\n";
         }
+        deselect();
         updateAll();
     }
     else {
@@ -70,40 +71,32 @@ void MainWindow ::cardClicked(){
 int MainWindow::fromDeck(){
     if (tab.deckRule() == 1){
         std::cout << "ERR: bola vybrana prazdna karta z decku, nemalo by sa nikdy stat\n";
-        restore();
         return 1; //tento stav nikdy nenastane asi ale aj tak
     }
     // deselectujeme kartu nastavime jej styleSheet
     //TODO - pozriet sa kam kartu presuvame skontrolovat ci sa to da
     if (clicked.where == 1){
-            //deselect
-        if (tab.foundRule(selected.card) != 0){
+        if (tab.deck2Found() != 0){
             std::cout << "karta sa neda polozit do foundation\n"; // TODO vytvorit funkciu deselect
-            restore();
             return 1;
         }
-        tab.deck2Found();
-        updateDeck();
-        updateFoundation();
-        deselect();
+
+//        updateDeck();
+//        updateFoundation();
+//        deselect();
         return 0;
     }
     if (clicked.where == 2){
         //deselect
-        if (tab.tableRule(selected.card, clicked.card) != 0){
-            std::cout << "karta sa neda dat na sem na stol\n";
-            restore();
-            return 1;
+        if (tab.deck2Table(clicked.pile) != 0){
+           std::cout<<"neda sa presunut\n";
+           return 1;
         }
-        tab.deck2Table(clicked.pile);
-        updateDeck();
-        updateTable(clicked.pile + 1);
-        deselect();
         return 0;
     }
     //deselect ak clicked.where == 0
 // k inym konfiguraciam by nemalo nastat
-    restore();
+//    restore();
     return 1;
 }
 //TODO
@@ -111,13 +104,11 @@ int MainWindow::fromFound(){
     //deselect
     if (clicked.where != 2){
         std::cout << "z found sa da karta vlozit iba na found\n";
-        restore();
         return 1;
     }
 
     if (tab.tableRule(selected.card, clicked.card) != 0){
         std::cout << "sem sa to vlozit neda\n";
-        restore();
         return 1;
     }
 
@@ -133,7 +124,6 @@ int MainWindow::fromTable(){
     if (clicked.where == 1){
         if (tab.foundRule(selected.card) != 0){
             std::cout << "karta sa neda presunut do foundation\n";
-            restore();
             return 1;
         }
 
@@ -148,7 +138,6 @@ int MainWindow::fromTable(){
         std::cout << "do:" << clicked.pile << " z: " << selected.pile << "\n";
         if (tab.table2Table(clicked.pile,selected.pile) != 0) {
             std::cout << "karta sa neda vlozit na kopu";
-            restore();
             return 1;
         }
 //        updateTable(selected.pile);
@@ -156,7 +145,6 @@ int MainWindow::fromTable(){
         deselect();
         return 0;
     }
-    restore();
     return 1;
 }
 
@@ -175,25 +163,6 @@ void MainWindow::on_newGame_clicked(){
 }
 
 void MainWindow::deselect(){
-    selected.button     = nullptr;
-    selected.card       = nullptr;
-    selected.clicked    = false;
-    selected.position   = -1;
-    selected.pile       = -1;
-    selected.where      = -1;
-}
-
-void MainWindow::restore(){
-    selected.card->Print();
-    selected.button->setStyleSheet(
-                "border-image: url(:"+
-                rank[Ranking(selected.card->GetRank())]+of+
-                suit[Suiting(selected.card->GetSuit())]+");"
-                "background: white;"
-                "border-style: inset;"
-                "border-width: 2px;"
-                "border-color: red;"
-            );
     selected.button     = nullptr;
     selected.card       = nullptr;
     selected.clicked    = false;
