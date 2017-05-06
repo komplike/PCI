@@ -14,10 +14,6 @@ Card *Table::deckLast(){
     return deck[deck.size() - 1];
 }
 
-Card *Table::deckFirst(){
-    return deck[0];
-}
-
 Card *Table::getDeckCard(int i){
     return deck[i];
 }
@@ -39,21 +35,11 @@ unsigned Table::foundSize(int i){
     return a;
 }
 
-Card *Table::getFoundLast(int found){
-    return foundation[found].getLast();
-}
-
 unsigned Table::deckSize(){
     return deck.size();
 }
 
 void Table::shuffle() {
-    if (all.size() > 52){
-        for (unsigned i = 0; i < all.size(); ++i){
-            if (Suiting(all[i].GetSuit()) == 4)
-                all.erase(all.begin() + i);
-        }
-    }
     srand ( unsigned ( time(0) ) );
     random_shuffle ( all.begin(), all.end() );
     all.push_back(Card(Rank::Zero, Suit::Blank));
@@ -63,9 +49,6 @@ void Table::initGame() {
     shuffle();
     foundation = vector<Piles>(4);
     tableau = vector<Piles>(7);
-
-    for (unsigned i = 0; i< all.size(); ++i)
-        all.pop_back();
 
     int size = 1;
     int index = 0;
@@ -77,11 +60,41 @@ void Table::initGame() {
          tableau[i].face(true);
          size++;
      }
-
     for (unsigned i = 28; i < all.size(); ++i) {
         deck.push_back(&all[i]);
     }
 
+}
+
+void Table::loadGame() {
+    ifstream file;
+    file.open("save.log");
+    if(!file.is_open())
+        return;
+    foundation = vector<Piles>(4);
+    tableau = vector<Piles>(7);
+    string line;
+    int n,i=0;
+    while (! file.eof()) {
+        getline( file, line );
+        istringstream is (line);
+        while (is >> n) {
+            switch(i) {
+                case 0: deck.push_back(&all[n]);break;
+                case 1:
+                case 2:
+                case 3:
+                case 4: foundation[i-1].insert(&all[n]);foundation[i-1].face(true);break;
+            default: tableau[i-5].insert(&all[n]);is>>n;if (n==1) tableau[i-5].face(true);break;
+                }
+            }
+        ++i;
+    }
+    file.close();
+    deckLast()->setFace(true);
+    for (unsigned i = 0; i < tableau.size(); i++){
+        tableau[i].face(true);
+        }
 }
 
 
@@ -166,10 +179,8 @@ int Table::deck2Table(int to){
         return 1;
     tableau[to].insert(deckLast());
     tableau[to].getLast()->setFace(true);
-
-    std::cout << "deck pred: " <<  deck.size();
     deck.pop_back();
-    std::cout<< " deck po: " << deck.size() << "\n";
+
     return 0;
 }
 
@@ -191,56 +202,31 @@ int Table::deck2Found(){
             foundation[3].getLast()->setFace(true);
             break;
     }
-    std::cout << "deck pred: " <<  deck.size();
+
     deck.pop_back();
-    std::cout<< " deck po: " << deck.size() << "\n";
+
     return 0;
 }
 
-int Table::table2Table(int to, int from, int position) {
+int Table::table2Table(int to, int from) {
     if (tableau[from].empty())
         return 1;
-    Card *toCard = tableau[to].getLast();
-    Card *fromCard = getTableCard(from, position);
-std::cout << position << "position\n";
-    if (tableRule(toCard, fromCard) == 1){
-        std::cout << "!succ\n";
+
+    if (tableRule(tableau[to].getLast(), tableau[from].getLast()) == 1){
         return 1;
     }
-    std::cout << "----------------------------------------succ\n" << position << tableau[from].size();
-
-    /*
-        tu bude cyklus prekladat karty od konca from pile do tmp pile
-        potom dalsi cyklus prelozi z tmp pile do to
-    */
-    Piles tmp;
-    print();
-    for (int i = tableau[from].size() - 1; i >= position; --i){
-        std::cout <<tmp.size()<< "do tmp\n";
-        tmp.insert(tableau[from].getLast());
-        tableau[from].pop();
-    }
-    for (unsigned i = 0; 0 < tmp.size(); i++){
-        std::cout << tmp.size() <<"z tmp\n";
-        tableau[to].insert(tmp.getLast());
-        tmp.pop();
-    }
-
-//    tableau[to].insert(tableau[from].getLast());
-//    tableau[from].pop();
+    tableau[to].insert(tableau[from].getLast());
+    tableau[from].pop();
     if (!tableau[from].empty())
         tableau[from].getLast()->setFace(true);
 
-    print();
     return 0;
 }
 
 int Table::table2Found(int from) {
-
     if (tableau[from].empty()){
        return 1;
     }
-
     if (foundRule(tableau[from].getLast()) == 1)
         return 1;
 
@@ -258,10 +244,9 @@ int Table::table2Found(int from) {
             foundation[3].getLast()->setFace(true);
             break;
     }
-std::cout << "tu?   4\n";
+
     tableau[from].pop();
-    if (!tableau[from].empty())
-        tableau[from].getLast()->setFace(true);
+    tableau[from].getLast()->setFace(true);
 
     return 0;
 }
@@ -302,15 +287,15 @@ int Table::foundRule(Card *card){
     return 1;
 }
 
-int Table::tableRule(Card *to, Card *from){
-    if (from == nullptr)
+int Table::tableRule(Card *bottom, Card *top){
+    if (top == nullptr)
         return 1;
     //ak nieje spodna karta ide na spod kral
-    if (to == nullptr && Ranking(from->GetRank()) == 13){ //13 je kral
+    if (bottom == nullptr && Ranking(top->GetRank()) == 13){ //13 je kral
         return 0;
     }
-    if (Suiting(to->GetSuit())%2 != Suiting(from->GetSuit())%2) {     //sedi farba
-        if (Ranking(to->GetRank()) == Ranking(from->GetRank()) + 1){   //je karta vysia
+    if (Suiting(bottom->GetSuit())%2 != Suiting(top->GetSuit())%2) {     //sedi farba
+        if (Ranking(bottom->GetRank()) == Ranking(top->GetRank()) + 1){   //je karta vysia
             return 0;
         }
     }

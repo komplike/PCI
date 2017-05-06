@@ -1,61 +1,18 @@
-//Table.cpp + table.h hlavicky;
-//pridat include do table.cpp
+/**
+  * @file save.cpp
+  * @author xsanta07
+  * @author xslavk01
+  * @brief Implementation of saving game.
+  */
 #include "save.h"
-
-
-// za initGame()
-void Table::loadGame() {
-    std::ifstream file;
-    file.open("save.log");
-    if(!file.is_open())
-        return;
-    foundation = vector<Piles>(4);
-    tableau = vector<Piles>(7);
-
-    string line;
-    int n,i=0;
-    while (! file.eof()) {
-        getline( file, line );
-        istringstream is (line);
-        while (is >> n) {
-            switch(i) {
-                case 0: deck.push_back(&all[n]);break;
-                case 1:
-                case 2:
-                case 3:
-                case 4: foundation[i-1].insert(&all[n]);foundation[i-1].face(true);break;
-            default: tableau[i-5].insert(&all[n]);is>>n;if (n==1) tableau[i-5].face(true);break;
-                }
-            }
-        ++i;
-    }
-    file.close();
-    deckLast()->setFace(true);
-    for (unsigned i = 0; i < tableau.size(); i++){
-        tableau[i].face(true);
-        }
-}
-/////////////////////////////////////////////////////////////
-//game.cpp
-//nahrad loadgame tymto
-Table *loadGame(){
-    Table *tab = new Table;
-    tab->loadGame();
-    return tab;
-}
-
-///////////////////////////////////////////
-
-//save.cpp
-
-//pridat include
-
+#include <iostream>
 #include <fstream>
 #include <sstream>      // std::istringstream
 
-//nahrad int save() tymto
+using namespace std;
+//TODO nezabudnut na face!!
 int save(Table *tab){
-    std::ofstream file;
+    ofstream file;
     file.open("save.log");
     if(!file.is_open())
         return -1;
@@ -87,4 +44,16 @@ int save(Table *tab){
     file.close();
     return 0;
 }
-/////////////////////////////////////////////////////////
+
+int getIndex(Card *card){
+    if (card == nullptr){
+        return -1;
+    }
+    int r = Ranking(card->GetRank());
+    int s = Suiting(card->GetSuit());
+
+    if (s == 4)
+        return 52;
+    return r-1 + s*13;
+}
+

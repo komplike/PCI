@@ -9,10 +9,6 @@
 
 #include "card.h"
 #include "table.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <vector>
 
 int save(Table *tab);
 int load(int *n);
