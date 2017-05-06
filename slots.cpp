@@ -14,10 +14,19 @@ void MainWindow::on_newGame_clicked(){
     updateFoundation();
     for (unsigned i = 0; i < 4; ++i)
         found[i]->setEnabled(true);
-    updateDeck();
+    updateDeck();}
+
+void MainWindow::on_loadGame_clicked(){
+std::cout << "loadGame clicked\n";
 }
 
+void MainWindow::on_hint_clicked(){
+std::cout << "hint clicked\n";
+}
 
+void MainWindow::on_saveGame_clicked(){
+std::cout << "saveGame clicked\n";
+}
 /*********************************************************/
 /*                  karta z decku                        */
 /*********************************************************/

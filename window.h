@@ -1,19 +1,23 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-
 #include "mainwindow.h"
+#include "QtGui"
 
-namespace Ui {
-class Window;
-}
-
-class Window : public QMainWindow
+class Window : public QWidget
 {
     Q_OBJECT
 
-private:
-    MainWindow *w1;
-    MainWindow *w2;
+public:
+    Window(QWidget *parent = 0);
+    QHBoxLayout *toplayout;
+    QHBoxLayout *bottomlayout;
+    QPushButton *button;
+    MainWindow *W[4];
+    QVBoxLayout *layout;
+    int i;
+
+private slots:
+    void on_button_clicked();
 };
 
 #endif // WINDOW_H

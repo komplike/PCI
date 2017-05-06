@@ -64,6 +64,19 @@ private:
     Ui::MainWindow *ui;
 
 private slots:
+    void on_newGame_clicked();
+    void on_saveGame_clicked();
+    void on_loadGame_clicked();
+    void on_hint_clicked();
+
+    void on_deck_back_clicked();
+    void on_deck_face_clicked();
+
+    void on_foundation1_clicked();
+    void on_foundation2_clicked();
+    void on_foundation3_clicked();
+    void on_foundation4_clicked();
+
     void on_table1_card_1_clicked();
     void on_table1_card_2_clicked();
     void on_table1_card_3_clicked();
@@ -161,15 +174,6 @@ private slots:
     void on_table7_card_11_clicked();
     void on_table7_card_12_clicked();
     void on_table7_card_13_clicked();
-
-    void on_newGame_clicked();
-    void on_deck_back_clicked();
-    void on_deck_face_clicked();
-
-    void on_foundation1_clicked();
-    void on_foundation2_clicked();
-    void on_foundation3_clicked();
-    void on_foundation4_clicked();
 };
 
 #endif // MAINWINDOW_H

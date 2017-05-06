@@ -4152,6 +4152,19 @@ border-color: black;
       <string>Save Game</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="hint">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>450</y>
+       <width>87</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hint</string>
+     </property>
+    </widget>
     <zorder>layoutWidget</zorder>
     <zorder>newGame</zorder>
     <zorder>table7</zorder>
@@ -4163,6 +4176,7 @@ border-color: black;
     <zorder>table1</zorder>
     <zorder>loadGame</zorder>
     <zorder>saveGame</zorder>
+    <zorder>hint</zorder>
    </widget>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

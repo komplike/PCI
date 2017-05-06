@@ -1,18 +1,30 @@
-/**
-  * @file save.cpp
-  * @author xsanta07
-  * @author xslavk01
-  * @brief Implementation of saving game.
-  */
+//Table.cpp + table.h hlavicky;
+//pridat include do table.cpp
 #include "save.h"
-#include <iostream>
+
+// za initGame()
+using namespace std;
+/////////////////////////////////////////////////////////////
+//game.cpp
+//nahrad loadgame tymto
+Table *loadGame(){
+    Table *tab = new Table;
+    tab->loadGame();
+    return tab;
+}
+
+///////////////////////////////////////////
+
+//save.cpp
+
+//pridat include
+
 #include <fstream>
 #include <sstream>      // std::istringstream
 
-using namespace std;
-//TODO nezabudnut na face!!
+//nahrad int save() tymto
 int save(Table *tab){
-    ofstream file;
+    std::ofstream file;
     file.open("save.log");
     if(!file.is_open())
         return -1;
@@ -46,14 +58,14 @@ int save(Table *tab){
 }
 
 int getIndex(Card *card){
-    if (card == nullptr){
-        return -1;
-    }
-    int r = Ranking(card->GetRank());
-    int s = Suiting(card->GetSuit());
+     if (card == nullptr){
+         return -1;
+     }
+     int r = Ranking(card->GetRank());
+     int s = Suiting(card->GetSuit());
 
-    if (s == 4)
-        return 52;
-    return r-1 + s*13;
-}
-
+     if (s == 4)
+         return 52;
+     return r-1 + s*13;
+ }
+/////////////////////////////////////////////////////////
