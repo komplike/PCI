@@ -2,6 +2,22 @@
 #include "ui_mainwindow.h"
 #include "table.h"
 
+
+/*********************************************************/
+/*                   game options                        */
+/*********************************************************/
+void MainWindow::on_newGame_clicked(){
+    tab.initGame();
+    ui->deck_back->setEnabled(true);
+    for (unsigned i = 1; i<=7; ++i)
+        updateTable(i);
+    updateFoundation();
+    for (unsigned i = 0; i < 4; ++i)
+        found[i]->setEnabled(true);
+    updateDeck();
+}
+
+
 /*********************************************************/
 /*                  karta z decku                        */
 /*********************************************************/
@@ -12,7 +28,10 @@ void MainWindow::on_deck_face_clicked(){
     clicked.pile   = -1;
     clicked.position = -1;
     cardClicked();}
-
+void MainWindow::on_deck_back_clicked(){
+    tab.dealCard();
+    deselect();
+    updateDeck();}
 /*********************************************************/
 /*                  foudation karty                      */
 /*********************************************************/

@@ -18,14 +18,9 @@ MainWindow::~MainWindow()
 
 void MainWindow ::cardClicked(){
     std::cout << "cardClicked\n";
-////    tab.print();
-//    std::cout << "padam?";
-//    std::cout << clicked.where << clicked.pile << clicked.position << "------------------\n";
-//    std::cout << selected.where << selected.pile << selected.position << "------------------\n";
-//    std::cout << "?\n";
+
     if (selected.clicked) {
         //presuvame kartu z decku
-//        std::cout << "slected\n";
         if (selected.where == 0){
             fromDeck();
         }
@@ -48,7 +43,7 @@ void MainWindow ::cardClicked(){
         selected.card = clicked.card;
         selected.where = clicked.where;
         selected.pile = clicked.pile;
-        selected.where = clicked.where;
+        selected.position = clicked.position;
         selected.clicked = true;
         selected.button->setStyleSheet(
                     "border-image: url(:"+
@@ -90,7 +85,7 @@ int MainWindow::fromFound(){
         return 1;
     }
 
-    if (tab.found2Table(selected.pile, clicked.pile) != 0){
+    if (tab.found2Table(clicked.pile, selected.pile) != 0){
         std::cout << "sem sa to vlozit neda\n";
         return 1;
     }
@@ -106,13 +101,10 @@ int MainWindow::fromTable(){
             return 1;
         }
         tab.table2Found(selected.pile);
-        std::cout << "tu-2-2-?\n";
         return 0;
     }
     if (clicked.where == 2){
-        //isClickedLast ak nie tak chyba
-//        std::cout << "do:" << clicked.pile << " z: " << selected.pile << "\n";
-        if (tab.table2Table(clicked.pile,selected.pile) != 0) {
+        if (tab.table2Table(clicked.pile,selected.pile, selected.position) != 0) {
             std::cout << "karta sa neda vlozit na kopu";
             return 1;
         }
@@ -124,16 +116,6 @@ int MainWindow::fromTable(){
 // kliknutie na "New Game"
 // vyhodi prazdnu kartu z balicka, balicek zamiesa a prida ju na koniec
 // karty rozda na stol a zobrazi
-void MainWindow::on_newGame_clicked(){
-    tab.initGame();
-    ui->deck_back->setEnabled(true);
-    for (unsigned i = 1; i<=7; ++i)
-        updateTable(i);
-    updateFoundation();
-    for (unsigned i = 0; i < 4; ++i)
-        found[i]->setEnabled(true);
-    updateDeck();
-}
 
 void MainWindow::deselect(){
     std::cout << "deselect\n";
@@ -145,11 +127,6 @@ void MainWindow::deselect(){
     selected.where      = -1;
 }
 
-void MainWindow::on_deck_back_clicked(){
-    tab.dealCard();
-    deselect();
-    updateDeck();
-}
 
 // zobrazi karty na tableau
 void MainWindow::updateTable(unsigned num){
@@ -236,6 +213,18 @@ void MainWindow::updateTable(unsigned num){
 
 // zobrazi deck podla stavu hry
 void MainWindow::updateDeck(){
+    if (tab.deckSize() == 1){
+        ui->deck_face->setStyleSheet(
+                                    "border-style: inset;"
+                                    "border-width: 2px;"
+                                    "border-color: white;"
+                                    );
+        ui->deck_back->setStyleSheet(
+                                    "border-style: inset;"
+                                    "border-width: 2px;"
+                                    "border-color: white;"
+                                    );
+    }
    if (Suiting(tab.deckLast()->GetSuit()) == 4){
        ui->deck_face->setStyleSheet(
                                    "border-style: inset;"
@@ -279,7 +268,6 @@ void MainWindow::updateFoundation(){
         card = tab.getFoundLast(i);
         if (card == nullptr){
             found[i]->setStyleSheet(
-        //                "background: white;"
                 "border-style: inset;"
                 "border-width: 2px;"
                 "border-color: red;"
@@ -320,6 +308,8 @@ void MainWindow::initUi(){
     selected.button = nullptr;
 
     ui->newGame->setStyleSheet( "background: white;");
+    ui->loadGame->setStyleSheet( "background: white;");
+    ui->saveGame->setStyleSheet( "background: white;");
     suit[0] = "spades.png";
     suit[1] = "hearts.png";
     suit[2] = "clubs.png";

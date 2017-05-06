@@ -140,6 +140,8 @@ public:
     QPushButton *table7_card_12;
     QPushButton *table7_card_13;
     QPushButton *newGame;
+    QPushButton *loadGame;
+    QPushButton *saveGame;
     QToolBar *mainToolBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -1444,6 +1446,12 @@ public:
         newGame->setObjectName(QString::fromUtf8("newGame"));
         newGame->setGeometry(QRect(30, 450, 87, 29));
         newGame->setStyleSheet(QString::fromUtf8(""));
+        loadGame = new QPushButton(table);
+        loadGame->setObjectName(QString::fromUtf8("loadGame"));
+        loadGame->setGeometry(QRect(130, 450, 87, 29));
+        saveGame = new QPushButton(table);
+        saveGame->setObjectName(QString::fromUtf8("saveGame"));
+        saveGame->setGeometry(QRect(230, 450, 87, 29));
         layoutWidget->raise();
         newGame->raise();
         table7->raise();
@@ -1453,6 +1461,8 @@ public:
         table3->raise();
         table2->raise();
         table1->raise();
+        loadGame->raise();
+        saveGame->raise();
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -1569,6 +1579,8 @@ public:
         table7_card_12->setText(QString());
         table7_card_13->setText(QString());
         newGame->setText(QApplication::translate("MainWindow", "New Game", 0, QApplication::UnicodeUTF8));
+        loadGame->setText(QApplication::translate("MainWindow", "Load Game", 0, QApplication::UnicodeUTF8));
+        saveGame->setText(QApplication::translate("MainWindow", "Save Game", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

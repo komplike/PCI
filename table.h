@@ -15,6 +15,7 @@
 #include <iostream>
 
 #include "card.h"
+//#include "save.h"
 
 class Piles {
     std::vector<Card*> pile;
@@ -81,6 +82,7 @@ private:
 
 public:
     void initGame();
+    void loadGame();
     void print();
     void printTableau();
     void printFoundation();
@@ -89,7 +91,7 @@ public:
     int dealCard();
     int deck2Table(int to);
     int deck2Found();
-    int table2Table(int to, int from);
+    int table2Table(int to, int from, int position);
     int table2Found(int from);
     int found2Table(int from, int to);
 

@@ -6,6 +6,7 @@
   */
 
 #include "table.h"
+#include "save.h"
 
 using namespace std;
 
@@ -64,7 +65,7 @@ void Table::initGame() {
     tableau = vector<Piles>(7);
 
     for (unsigned i = 0; i< all.size(); ++i)
-        all[i].setFace(false);
+        all.pop_back();
 
     int size = 1;
     int index = 0;
@@ -196,30 +197,53 @@ int Table::deck2Found(){
     return 0;
 }
 
-int Table::table2Table(int to, int from) {
+int Table::table2Table(int to, int from, int position) {
     if (tableau[from].empty())
         return 1;
-
-    if (tableRule(tableau[to].getLast(), tableau[from].getLast()) == 1){
+    Card *toCard = tableau[to].getLast();
+    Card *fromCard = getTableCard(from, position);
+std::cout << position << "position\n";
+    if (tableRule(toCard, fromCard) == 1){
+        std::cout << "!succ\n";
         return 1;
     }
-    tableau[to].insert(tableau[from].getLast());
-    tableau[from].pop();
+    std::cout << "----------------------------------------succ\n" << position << tableau[from].size();
+
+    /*
+        tu bude cyklus prekladat karty od konca from pile do tmp pile
+        potom dalsi cyklus prelozi z tmp pile do to
+    */
+    Piles tmp;
+    print();
+    for (int i = tableau[from].size() - 1; i >= position; --i){
+        std::cout <<tmp.size()<< "do tmp\n";
+        tmp.insert(tableau[from].getLast());
+        tableau[from].pop();
+    }
+    for (unsigned i = 0; 0 < tmp.size(); i++){
+        std::cout << tmp.size() <<"z tmp\n";
+        tableau[to].insert(tmp.getLast());
+        tmp.pop();
+    }
+
+//    tableau[to].insert(tableau[from].getLast());
+//    tableau[from].pop();
     if (!tableau[from].empty())
         tableau[from].getLast()->setFace(true);
 
+    print();
     return 0;
 }
 
 int Table::table2Found(int from) {
-    std::cout << "tu?\n";
+
     if (tableau[from].empty()){
        return 1;
     }
-    std::cout << "tu?   2\n";
+
     if (foundRule(tableau[from].getLast()) == 1)
         return 1;
-std::cout << "tu?   3\n";
+
     switch(Suiting(tableau[from].getLast()->GetSuit())){
         case 0: foundation[0].insert(tableau[from].getLast());
             foundation[0].getLast()->setFace(true);
