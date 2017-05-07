@@ -114,7 +114,7 @@ void Table::loadGame() {
         ++i;
     }
     file.close();
-    deckLast()->setFace(true);
+    deckLast()->setFace(true);//neznama :D
     for (unsigned i = 0; i < tableau.size(); i++){
         tableau[i].face(true);
         }
