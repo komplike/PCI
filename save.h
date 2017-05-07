@@ -17,4 +17,5 @@
 //int save(Table *tab);
 int load(int *n);
 int getIndex(Card *card);
+int save(Table *tab);
 #endif // SAVE_H

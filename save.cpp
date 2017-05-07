@@ -1,26 +1,7 @@
-//Table.cpp + table.h hlavicky;
-//pridat include do table.cpp
 #include "save.h"
-
-// za initGame()
-using namespace std;
-/////////////////////////////////////////////////////////////
-//game.cpp
-//nahrad loadgame tymto
-Table *loadGame(){
-    Table *tab = new Table;
-    tab->loadGame();
-    return tab;
-}
-
-///////////////////////////////////////////
-
-//save.cpp
-
-//pridat include
-
 #include <fstream>
 #include <sstream>      // std::istringstream
+using namespace std;
 
 //nahrad int save() tymto
 int save(Table *tab){
@@ -68,4 +49,3 @@ int getIndex(Card *card){
          return 52;
      return r-1 + s*13;
  }
-/////////////////////////////////////////////////////////

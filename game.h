@@ -17,5 +17,5 @@ int startMenu();
 int foundationMenu();
 int actionMenu();
 int tableMenu(int opt);
-int gameMenu(int *action, int *from, int *to);
+int gameMenu(int *action, int *from, int *to, int *pos);
 #endif // GAME_H

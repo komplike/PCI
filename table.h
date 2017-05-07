@@ -15,7 +15,6 @@
 #include <iostream>
 
 #include "card.h"
-//#include "save.h"
 
 class Piles {
     std::vector<Card*> pile;
@@ -91,7 +90,7 @@ public:
     int dealCard();
     int deck2Table(int to);
     int deck2Found();
-    int table2Table(int to, int from, int position);
+    int table2Table(int to, int from,int position);
     int table2Found(int from);
     int found2Table(int from, int to);
 
@@ -116,5 +115,6 @@ public:
     Card *getFoundCard(int found, int card);
     Card *getFoundLast(int found);
     Card* hint();
+    int emptyDT();
 };
 #endif // TABLEH

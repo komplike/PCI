@@ -21,15 +21,16 @@ int gameUi(){
     if (tab == nullptr) {
         return 99;
     }
-    int action = 0;
-    int from = 0;
-    int to = 0;
+    int action;
+    int from;
+    int to;
+    int position =0;
     while(1) {
         action = 0;
         from = 0;
         to = 0;
         tab->print();
-        option = gameMenu(&action,&from,&to);
+        option = gameMenu(&action,&from,&to,&position);
         if (option == -1) {
             string str = "";
             while(true) {
@@ -53,32 +54,42 @@ int gameUi(){
         }
         if (option == 2) {
             Card * tmpCard = tab->hint();
+            cout << "HINT: ";
             if (tmpCard != nullptr) {
-                cout << "HINT: ";
                 tmpCard->Print();
                 cout << endl;
             }
+            else cout << "Nova karta z balicka" << endl;
         }
         int result = 0;
         switch (action) {
         case 1: result = tab->dealCard();break;
         case 2: result = tab->deck2Table(to);break;
         case 3: result = tab->deck2Found();break;
-        case 4: result = tab->table2Table(to,from);break;
+        case 4: result = tab->table2Table(to,from,position);break;
         case 5: result = tab->table2Found(from);break;
         case 6: result = tab->found2Table(from,to);break;
         }
 
         if (result != 0)
             cout << "Zly tah\n";
+        //test na koniec hry
+        if (tab->emptyDT()){
+            cout<<endl<<endl<<endl<<"\t\t\tVYHRAL SI"<<endl;
+            cout<<"stlac lubovolnu klavesu pre navrat do startovneho menu"<<endl;
+            getchar();
+            delete tab;
+            gameUi();
+        }
 
     }
     delete tab;
     return 0;
 }
 
-int gameMenu(int *action, int *from, int *to) {
+int gameMenu(int *action, int *from, int *to,int *pos) {
     int option = 0;
+    *pos = 0;
     string str = "";
     while(true) {
     cout << "(1) Nova karta z balicka" << endl <<

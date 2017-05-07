@@ -325,15 +325,17 @@ int Table::foundRule(Card *card){
         return 1;
     //ak je foundation prazdna musi to byt eso (1)
     if (foundation[i].empty()){
-        if (Ranking(card->GetRank()) == 1)
+        if (Ranking(card->GetRank()) == 1) {
             return 0;
-        else
+        }
+        else {
             return 1;
+        }
     }
     // ak vo foundation rovnakej farby nie je o 1 mensia alebo ide o prazdnu kartu
-    if (Ranking(foundation[i].getLast()->GetRank()) + 1 == Ranking(card->GetRank()))
+    if (Ranking(foundation[i].getLast()->GetRank()) + 1 == Ranking(card->GetRank())) {
         return 0;
-
+    }
     return 1;
 }
 
@@ -361,26 +363,34 @@ int Table::deckRule(){
 
 
 Card* Table::hint() {
+    unsigned int i;
     if(!deckRule()) {
         if(!foundRule(deckLast())) {
             return deckLast();
         }
     }
-    for (unsigned i=0;i<7;++i) {
-        if(foundRule(tableau[i].getLast()))
+    for (i=0;i<7;++i) {
+        if(!foundRule(tableau[i].getLast())){
             return tableau[i].getLast();
+        }
     }
-    for (unsigned i=0;i<7;++i) {
-        for (unsigned j=0;j<7;++j) {
-            if(tableRule(tableau[i].getLast(),tableau[j].getLast()))
+    for (i=0;i<7;++i) {
+        for (unsigned int j=0;j<7;++j) {
+            if(!tableRule(tableau[i].getLast(),tableau[j].getLast()))
                 return tableau[j].getLast();
         }
     }
-    for (unsigned i=0;i<4;++i) {
-        for (unsigned j=0;j<7;++j) {
-            if(tableRule(foundation[i].getLast(),tableau[j].getLast()))
+    for (i=0;i<4;++i) {
+        for (unsigned int j=0;j<7;++j) {
+            if(!tableRule(foundation[i].getLast(),tableau[j].getLast()))
                 return foundation[i].getLast();
         }
     }
     return nullptr;
+}
+
+int Table::emptyDT() {
+    if(deck.empty() && tableau.empty())
+        return 1;
+    else return 0;
 }
