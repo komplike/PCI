@@ -363,35 +363,45 @@ int Table::deckRule(){
 
 
 Card* Table::hint() {
+    cout << "Table::hint ";
     unsigned int i;
     if(!deckRule()) {
         if(!foundRule(deckLast())) {
+            cout << "deck -> found ";
             return deckLast();
         }
     }
     for (i=0;i<7;++i) {
         if(!foundRule(tableau[i].getLast())){
+            cout << "table -> found ";
             return tableau[i].getLast();
         }
     }
     for (i=0;i<7;++i) {
         for (unsigned int j=0;j<7;++j) {
-            if(!tableRule(tableau[i].getLast(),tableau[j].getLast()))
+            if(!tableRule(tableau[i].getLast(),tableau[j].getLast())) {
+                cout << "table -> table ";
                 return tableau[j].getLast();
+            }
         }
     }
     if(!deckRule()) {
         for (i=0;i<7;++i) {
-            if(!tableRule(tableau[i].getLast(),deckLast()))
+            if(!tableRule(tableau[i].getLast(),deckLast())){
+                cout << "deck -> table ";
                 return deckLast();
+            }
         }
     }
     for (i=0;i<4;++i) {
         for (unsigned int j=0;j<7;++j) {
-            if(!tableRule(foundation[i].getLast(),tableau[j].getLast()))
+            if(!tableRule(foundation[i].getLast(),tableau[j].getLast())) {
+                cout << "found -> table ";
                 return foundation[i].getLast();
+            }
         }
     }
+    cout << "ret nullptr ";
     return nullptr;
 }
 

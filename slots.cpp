@@ -22,6 +22,7 @@ std::cout << "loadGame clicked\n";
 
 void MainWindow::on_hint_clicked(){
 std::cout << "hint clicked\n";
+    deselect();
     Card* tmpCard = tab.hint();
     std::cout << "hint called" << std::endl;
     if (tmpCard == nullptr) {//hint = nova karta z decku
