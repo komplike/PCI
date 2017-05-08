@@ -22,7 +22,44 @@ std::cout << "loadGame clicked\n";
 
 void MainWindow::on_hint_clicked(){
 std::cout << "hint clicked\n";
+    Card* tmpCard = tab.hint();
+    std::cout << "hint called" << std::endl;
+    if (tmpCard == nullptr) {//hint = nova karta z decku
+        std::cout << "new deck" << std::endl;
+        on_deck_back_clicked();
+        return;
+    }
+    else {
+        std::cout << "nie je null" << std::endl << "d to t test:"<< std::endl;
+        if (Ranking(tab.deckLast()->GetRank()) == Ranking(tmpCard->GetRank()) && Suiting(tab.deckLast()->GetSuit()) == Suiting(tmpCard->GetSuit())) {
+            std::cout << "d to t" << std::endl;
+            on_deck_face_clicked(); // karta z decku na stol
+            return;
+        }
+            std::cout << "t to t test" << std::endl;
+        for (unsigned int i=0; i<7;++i) {
+            if (Ranking(tab.getTableCard(i,tab.tableSize(i)-1)->GetRank()) == Ranking(tmpCard->GetRank()) && Suiting(tab.getTableCard(i,tab.tableSize(i)-1)->GetSuit()) == Suiting(tmpCard->GetSuit())) {
+                std::cout << "t to t/f" << std::endl;
+                selectLastfromTable(i); // karta zo stola na stol
+                return;
+            }
+        }
+        std::cout << "f to t/f" << std::endl;
+        for (unsigned int i=0; i<4;++i) {
+            if (Ranking(tab.getFoundCard(i,tab.foundSize(i)-1)->GetRank()) == Ranking(tmpCard->GetRank()) && Suiting(tab.getFoundCard(i,tab.foundSize(i)-1)->GetSuit()) == Suiting(tmpCard->GetSuit())) {
+                std::cout << "f to t" << std::endl;
+                switch (i) {
+                    case 0: on_foundation1_clicked();
+                    case 1: on_foundation2_clicked();
+                    case 2: on_foundation3_clicked();
+                    case 3: on_foundation4_clicked();
+                }//karta z foundation na stol
+                return;
+            }
+        }
+    }
 }
+
 
 void MainWindow::on_saveGame_clicked(){
 std::cout << "saveGame clicked\n";

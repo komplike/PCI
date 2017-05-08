@@ -68,6 +68,7 @@ private slots:
     void on_saveGame_clicked();
     void on_loadGame_clicked();
     void on_hint_clicked();
+    void selectLastfromTable(unsigned int i);
 
     void on_deck_back_clicked();
     void on_deck_face_clicked();

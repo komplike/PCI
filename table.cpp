@@ -380,6 +380,12 @@ Card* Table::hint() {
                 return tableau[j].getLast();
         }
     }
+    if(!deckRule()) {
+        for (i=0;i<7;++i) {
+            if(!tableRule(tableau[i].getLast(),deckLast()))
+                return deckLast();
+        }
+    }
     for (i=0;i<4;++i) {
         for (unsigned int j=0;j<7;++j) {
             if(!tableRule(foundation[i].getLast(),tableau[j].getLast()))
