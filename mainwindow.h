@@ -30,6 +30,7 @@ public:
     ~MainWindow();
 
 private:
+    void selectLastfromTable(unsigned int i);
     void updateTable(unsigned num);
     void updateFoundation();
     void updateDeck();
@@ -68,6 +69,7 @@ private slots:
     void on_saveGame_clicked();
     void on_loadGame_clicked();
     void on_hint_clicked();
+    void on_back_clicked();
 
     void on_deck_back_clicked();
     void on_deck_face_clicked();

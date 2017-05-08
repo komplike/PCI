@@ -143,6 +143,7 @@ public:
     QPushButton *loadGame;
     QPushButton *saveGame;
     QPushButton *hint;
+    QPushButton *back;
     QToolBar *mainToolBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -1456,6 +1457,9 @@ public:
         hint = new QPushButton(table);
         hint->setObjectName(QString::fromUtf8("hint"));
         hint->setGeometry(QRect(330, 450, 87, 29));
+        back = new QPushButton(table);
+        back->setObjectName(QString::fromUtf8("back"));
+        back->setGeometry(QRect(430, 450, 87, 29));
         layoutWidget->raise();
         newGame->raise();
         table7->raise();
@@ -1468,6 +1472,7 @@ public:
         loadGame->raise();
         saveGame->raise();
         hint->raise();
+        back->raise();
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -1587,6 +1592,7 @@ public:
         loadGame->setText(QApplication::translate("MainWindow", "Load Game", 0, QApplication::UnicodeUTF8));
         saveGame->setText(QApplication::translate("MainWindow", "Save Game", 0, QApplication::UnicodeUTF8));
         hint->setText(QApplication::translate("MainWindow", "Hint", 0, QApplication::UnicodeUTF8));
+        back->setText(QApplication::translate("MainWindow", "back", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

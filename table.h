@@ -33,6 +33,16 @@ public:
     Card *getLast();
 };
 
+/********************************************/
+struct move{
+    int from = -1;
+    int fromIdx = -1;
+    int to = -1;
+    int toIdx = -1;
+    int NOCards = -1;
+    bool faceChanged = false;
+};
+/********************************************/
 class Table {
 
 //public:
@@ -42,6 +52,9 @@ private:
     std::vector<Piles> foundation;
     std::vector<Piles> tableau;
     std::vector<Card*> deck;
+/****************************************************/
+    std::vector<struct move> moves;
+/****************************************************/
 
     std::vector<Card> all = {
         //Spades 0 - 12
@@ -93,18 +106,17 @@ public:
     int table2Table(int to, int from,int position);
     int table2Found(int from);
     int found2Table(int from, int to);
-
-//TODO
-//  - vytvorit pomocny vektor v Table
-//  - vytvorit nasledujuce funkcie:
-//    int table2tmpPile(int from, int index); // presuva karty od konca jednej pile na stole po index do tmpPile
-//    int tmpPile2table(int to);              // presuva z tmpPile do pile na stole
-
-    //rules
     int foundRule(Card *card);
     int tableRule(Card *to, Card *from);
     int deckRule();
-
+/**************************************************************/
+    bool movesEmpty();
+    //hlavne sa netreba zlaknut :D
+    int stepAdd(int from, int fromIdx,
+                int to, int toIdx,
+                int NOCards, bool faceChanged);
+    int stepBack();
+/**************************************************************/
     unsigned deckSize();
     unsigned foundSize(int i);
     unsigned tableSize(unsigned i);
@@ -112,8 +124,8 @@ public:
     Card *deckFirst();
     Card *getDeckCard(int i);
     Card *getTableCard(unsigned table, unsigned card);
-    Card *getFoundCard(int found, int card);
-    Card *getFoundLast(int found);
+    Card *getFoundCard(unsigned found, unsigned card);
+    Card *getFoundLast(unsigned found);
     Card* hint();
     int emptyDT();
 };
