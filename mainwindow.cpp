@@ -173,6 +173,9 @@ void MainWindow ::cardClicked(){
                     "border-color: red;"
                 );
     }
+
+    if (!tab.movesEmpty())
+        ui->back->setEnabled(true);
 }
 
 int MainWindow::fromDeck(){
@@ -429,9 +432,12 @@ void MainWindow::initUi(){
     ui->loadGame->setStyleSheet( "background: white;");
     ui->saveGame->setStyleSheet( "background: white;");
     ui->hint->setStyleSheet( "background: white;");
+    ui->back->setStyleSheet( "background: white;");
     ui->loadGame->setEnabled(false);
     ui->saveGame->setEnabled(false);
     ui->hint->setEnabled(false);
+    ui->back->setEnabled(false);
+
     suit[0] = "spades.png";
     suit[1] = "hearts.png";
     suit[2] = "clubs.png";

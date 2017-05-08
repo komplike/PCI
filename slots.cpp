@@ -12,6 +12,7 @@ void MainWindow::on_newGame_clicked(){
     ui->loadGame->setEnabled(true);
     ui->saveGame->setEnabled(true);
     ui->hint->setEnabled(true);
+//    ui->back->setEnabled(true);
     for (unsigned i = 1; i<=7; ++i)
         updateTable(i);
     updateFoundation();
@@ -64,9 +65,15 @@ std::cout << "hint clicked\n";
     }
 }
 
+void MainWindow::on_back_clicked(){
+    tab.stepBack();
+    if (tab.movesEmpty())
+        ui->back->setEnabled(false);
+    updateAll();
+}
 
 void MainWindow::on_saveGame_clicked(){
-std::cout << "saveGame clicked\n";
+    std::cout << "saveGame clicked\n";
 }
 /*********************************************************/
 /*                  karta z decku                        */

@@ -9,6 +9,94 @@
 #include "save.h"
 
 using namespace std;
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
+/***************************nove*****************************/
+// zavolas funkciu a znovu vytlacis karty
+// vrati 0 ak sa da vratit o krok spat inak vrati 1
+int Table::stepBack(){
+    if (moves.size() < 1)
+        return 1;
+
+    struct move move = moves[moves.size()-1];
+
+    switch (move.from) {
+    case 0:
+        if (move.to == 0)
+            rotate(deck.begin(), deck.end() - 1, deck.end());
+        else if (move.to == 1){
+            deck.push_back(foundation[move.toIdx].getLast());
+            foundation[move.toIdx].pop();
+        }
+        else if (move.to == 2){
+            deck.push_back(tableau[move.toIdx].getLast());
+            tableau[move.toIdx].pop();
+        }
+        break;
+    case 1:
+        if (move.to == 2){
+            foundation[move.fromIdx].insert(tableau[move.toIdx].getLast());
+            tableau[move.toIdx].pop();
+        }
+        break;
+    case 2:
+        if (move.to == 1){
+            if (move.faceChanged)
+                tableau[move.fromIdx].getLast()->setFace(false);
+
+            tableau[move.fromIdx].insert(foundation[move.toIdx].getLast());
+            foundation[move.toIdx].pop();
+        }
+        else if (move.to == 2){
+            Piles tmp;
+            print();
+            for (int i = 0; i < move.NOCards; ++i){
+                tmp.insert(tableau[move.toIdx].getLast());
+                tableau[move.toIdx].pop();
+            }
+            for (unsigned i = 0; 0 < tmp.size(); ++i){
+                tableau[move.fromIdx].insert(tmp.getLast());
+                tmp.pop();
+            }
+        }
+        break;
+    default:
+        return 1;
+    }
+
+    moves.pop_back();
+    return 0;
+}
+
+int Table::stepAdd(int from,
+                   int fromIdx,
+                   int to,
+                   int toIdx,
+                   int NOCards,
+                   bool faceChanged)
+{
+    if (moves.size() == 5)
+        moves.erase(moves.begin());
+
+    struct move tmp;
+
+    tmp.from = from;
+    tmp.fromIdx = fromIdx;
+    tmp.to = to;
+    tmp.toIdx = toIdx;
+    tmp.NOCards = NOCards;
+    tmp.faceChanged = faceChanged;
+
+    moves.push_back(tmp);
+
+    return 0;
+}
+
+
+bool Table::movesEmpty(){
+    return moves.empty();
+}
+
+/************************************************************/
 
 Card *Table::deckLast(){
     return deck[deck.size() - 1];
@@ -22,7 +110,7 @@ Card *Table::getDeckCard(int i){
     return deck[i];
 }
 
-Card *Table::getFoundCard(int found, int card){
+Card *Table::getFoundCard(unsigned found, unsigned card){
     return foundation[found].getCard(card);
 }
 
@@ -39,7 +127,7 @@ unsigned Table::foundSize(int i){
     return a;
 }
 
-Card *Table::getFoundLast(int found){
+Card *Table::getFoundLast(unsigned found){
     return foundation[found].getLast();
 }
 
@@ -189,6 +277,7 @@ void Table::printDeck(){
 
 
 int Table::dealCard(){
+    stepAdd(0, -1, 0, -1, -1, false);
     rotate(deck.begin(), deck.begin() + 1, deck.end());
 
     return 0;
@@ -199,6 +288,9 @@ int Table::deck2Table(int to){
     if ( deckRule() == 1 ||
             tableRule(tableau[to].getLast(), deckLast()) == 1)
         return 1;
+/*************************************/
+    stepAdd(0, -1, 2, to, -1, false); //pridane
+/*************************************/
     tableau[to].insert(deckLast());
     tableau[to].getLast()->setFace(true);
 
@@ -212,20 +304,30 @@ int Table::deck2Found(){
     if (deckRule() == 1 || foundRule(deckLast()) == 1)
         return 1;
 
-    switch(Suiting(deckLast()->GetSuit())){
-        case 0: foundation[0].insert(deckLast());
-            foundation[0].getLast()->setFace(true);
-            break;
-        case 1: foundation[1].insert(deckLast());
-            foundation[1].getLast()->setFace(true);
-            break;
-        case 2: foundation[2].insert(deckLast());
-            foundation[2].getLast()->setFace(true);
-            break;
-        case 3: foundation[3].insert(deckLast());
-            foundation[3].getLast()->setFace(true);
-            break;
-    }
+//    switch(Suiting(deckLast()->GetSuit())){
+//        case 0: foundation[0].insert(deckLast());
+//            foundation[0].getLast()->setFace(true);
+//            break;
+//        case 1: foundation[1].insert(deckLast());
+//            foundation[1].getLast()->setFace(true);
+//            break;
+//        case 2: foundation[2].insert(deckLast());
+//            foundation[2].getLast()->setFace(true);
+//            break;
+//        case 3: foundation[3].insert(deckLast());
+//            foundation[3].getLast()->setFace(true);
+//            break;
+//    }
+
+/*************************************/
+// menej jednoznacne ale rozumnejsie
+    stepAdd(0, -1, 1, Suiting(deckLast()->GetSuit()), -1, false); //pridane
+//          ^deck  ^found     ^idx vo found           ^ukazatel na kartu
+    foundation[Suiting(deckLast()->GetSuit())].insert(deckLast());
+    //         ^vklada sa podla farby    ^index karty na vrchu
+    foundation[Suiting(deckLast()->GetSuit())].getLast()->setFace(true);
+
+/*************************************/
     std::cout << "deck pred: " <<  deck.size();
     deck.pop_back();
     std::cout<< " deck po: " << deck.size() << "\n";
@@ -237,32 +339,31 @@ int Table::table2Table(int to, int from, int position) {
         return 1;
     Card *toCard = tableau[to].getLast();
     Card *fromCard = getTableCard(from, position);
-std::cout << position << "position\n";
+
     if (tableRule(toCard, fromCard) == 1){
-        std::cout << "!succ\n";
         return 1;
     }
-    std::cout << "----------------------------------------succ\n" << position << tableau[from].size();
+
 
     /*
         tu bude cyklus prekladat karty od konca from pile do tmp pile
         potom dalsi cyklus prelozi z tmp pile do to
     */
     Piles tmp;
-    print();
     for (int i = tableau[from].size() - 1; i >= position; --i){
-        std::cout <<tmp.size()<< "do tmp\n";
         tmp.insert(tableau[from].getLast());
         tableau[from].pop();
     }
+/*************************************/
+    stepAdd(2, from, 2, to, tmp.size(), !tableau[from].getLast()->GetFace()); //pridane
+
     for (unsigned i = 0; 0 < tmp.size(); i++){
-        std::cout << tmp.size() <<"z tmp\n";
         tableau[to].insert(tmp.getLast());
         tmp.pop();
     }
 
-//    tableau[to].insert(tableau[from].getLast());
-//    tableau[from].pop();
+
+
     if (!tableau[from].empty())
         tableau[from].getLast()->setFace(true);
 
@@ -278,6 +379,12 @@ int Table::table2Found(int from) {
 
     if (foundRule(tableau[from].getLast()) == 1)
         return 1;
+
+    /*************************************/
+    if (tableau[from].size() > 1 && !getTableCard(from, tableau[from].size() -1)->GetFace())
+        stepAdd(2, from, 1, Suiting(tableau[from].getLast()->GetSuit()), -1, true); //pridane
+    else
+        stepAdd(2, from, 1, Suiting(tableau[from].getLast()->GetSuit()), -1, false); //pridane
 
     switch(Suiting(tableau[from].getLast()->GetSuit())){
         case 0: foundation[0].insert(tableau[from].getLast());
@@ -308,6 +415,8 @@ int Table::found2Table(int from, int to) {
 
     if (tableRule(tableau[to].getLast(), foundation[from].getLast()) == 1)
         return 1;
+
+    stepAdd(1, from, 2, to, -1, false); //pridane
 
     tableau[to].insert(foundation[from].getLast());
 
