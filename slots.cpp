@@ -9,6 +9,9 @@
 void MainWindow::on_newGame_clicked(){
     tab.initGame();
     ui->deck_back->setEnabled(true);
+    ui->loadGame->setEnabled(true);
+    ui->saveGame->setEnabled(true);
+    ui->hint->setEnabled(true);
     for (unsigned i = 1; i<=7; ++i)
         updateTable(i);
     updateFoundation();

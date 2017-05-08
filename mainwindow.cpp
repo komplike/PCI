@@ -429,6 +429,9 @@ void MainWindow::initUi(){
     ui->loadGame->setStyleSheet( "background: white;");
     ui->saveGame->setStyleSheet( "background: white;");
     ui->hint->setStyleSheet( "background: white;");
+    ui->loadGame->setEnabled(false);
+    ui->saveGame->setEnabled(false);
+    ui->hint->setEnabled(false);
     suit[0] = "spades.png";
     suit[1] = "hearts.png";
     suit[2] = "clubs.png";
