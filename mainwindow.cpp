@@ -16,6 +16,124 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::selectLastfromTable(unsigned int i) {
+    unsigned int j = tab.tableSize(i)-1;
+    switch (i) {
+        case 0:
+            switch (j) {
+                case 0: on_table1_card_1_clicked();break;
+                case 1: on_table1_card_2_clicked();break;
+                case 2: on_table1_card_3_clicked();break;
+                case 3: on_table1_card_4_clicked();break;
+                case 4: on_table1_card_5_clicked();break;
+                case 5: on_table1_card_6_clicked();break;
+                case 6: on_table1_card_7_clicked();break;
+                case 7: on_table1_card_8_clicked();break;
+                case 8: on_table1_card_9_clicked();break;
+                case 9: on_table1_card_10_clicked();break;
+                case 10: on_table1_card_11_clicked();break;
+                case 11: on_table1_card_12_clicked();break;
+                case 12: on_table1_card_13_clicked();break;
+            } break;
+        case 1:
+            switch (j) {
+                case 0: on_table2_card_1_clicked();break;
+                case 1: on_table2_card_2_clicked();break;
+                case 2: on_table2_card_3_clicked();break;
+                case 3: on_table2_card_4_clicked();break;
+                case 4: on_table2_card_5_clicked();break;
+                case 5: on_table2_card_6_clicked();break;
+                case 6: on_table2_card_7_clicked();break;
+                case 7: on_table2_card_8_clicked();break;
+                case 8: on_table2_card_9_clicked();break;
+                case 9: on_table2_card_10_clicked();break;
+                case 10: on_table2_card_11_clicked();break;
+                case 11: on_table2_card_12_clicked();break;
+                case 12: on_table2_card_13_clicked();break;
+            } break;
+        case 2:
+            switch (j) {
+                case 0: on_table3_card_1_clicked();break;
+                case 1: on_table3_card_2_clicked();break;
+                case 2: on_table3_card_3_clicked();break;
+                case 3: on_table3_card_4_clicked();break;
+                case 4: on_table3_card_5_clicked();break;
+                case 5: on_table3_card_6_clicked();break;
+                case 6: on_table3_card_7_clicked();break;
+                case 7: on_table3_card_8_clicked();break;
+                case 8: on_table3_card_9_clicked();break;
+                case 9: on_table3_card_10_clicked();break;
+                case 10: on_table3_card_11_clicked();break;
+                case 11: on_table3_card_12_clicked();break;
+                case 12: on_table3_card_13_clicked();break;
+            } break;
+        case 3:
+            switch (j) {
+                case 0: on_table4_card_1_clicked();break;
+                case 1: on_table4_card_2_clicked();break;
+                case 2: on_table4_card_3_clicked();break;
+                case 3: on_table4_card_4_clicked();break;
+                case 4: on_table4_card_5_clicked();break;
+                case 5: on_table4_card_6_clicked();break;
+                case 6: on_table4_card_7_clicked();break;
+                case 7: on_table4_card_8_clicked();break;
+                case 8: on_table4_card_9_clicked();break;
+                case 9: on_table4_card_10_clicked();break;
+                case 10: on_table4_card_11_clicked();break;
+                case 11: on_table4_card_12_clicked();break;
+                case 12: on_table4_card_13_clicked();break;
+            } break;
+        case 4:
+            switch (j) {
+                case 0: on_table5_card_1_clicked();break;
+                case 1: on_table5_card_2_clicked();break;
+                case 2: on_table5_card_3_clicked();break;
+                case 3: on_table5_card_4_clicked();break;
+                case 4: on_table5_card_5_clicked();break;
+                case 5: on_table5_card_6_clicked();break;
+                case 6: on_table5_card_7_clicked();break;
+                case 7: on_table5_card_8_clicked();break;
+                case 8: on_table5_card_9_clicked();break;
+                case 9: on_table5_card_10_clicked();break;
+                case 10: on_table5_card_11_clicked();break;
+                case 11: on_table5_card_12_clicked();break;
+                case 12: on_table5_card_13_clicked();break;
+            } break;
+        case 5:
+            switch (j) {
+                case 0: on_table6_card_1_clicked();break;
+                case 1: on_table6_card_2_clicked();break;
+                case 2: on_table6_card_3_clicked();break;
+                case 3: on_table6_card_4_clicked();break;
+                case 4: on_table6_card_5_clicked();break;
+                case 5: on_table6_card_6_clicked();break;
+                case 6: on_table6_card_7_clicked();break;
+                case 7: on_table6_card_8_clicked();break;
+                case 8: on_table6_card_9_clicked();break;
+                case 9: on_table6_card_10_clicked();break;
+                case 10: on_table6_card_11_clicked();break;
+                case 11: on_table6_card_12_clicked();break;
+                case 12: on_table6_card_13_clicked();break;
+            } break;
+        case 6:
+            switch (j) {
+                case 0: on_table7_card_1_clicked();break;
+                case 1: on_table7_card_2_clicked();break;
+                case 2: on_table7_card_3_clicked();break;
+                case 3: on_table7_card_4_clicked();break;
+                case 4: on_table7_card_5_clicked();break;
+                case 5: on_table7_card_6_clicked();break;
+                case 6: on_table7_card_7_clicked();break;
+                case 7: on_table7_card_8_clicked();break;
+                case 8: on_table7_card_9_clicked();break;
+                case 9: on_table7_card_10_clicked();break;
+                case 10: on_table7_card_11_clicked();break;
+                case 11: on_table7_card_12_clicked();break;
+                case 12: on_table7_card_13_clicked();break;
+            } break;
+    }
+}
+
 void MainWindow ::cardClicked(){
     std::cout << "cardClicked\n";
 
@@ -55,6 +173,9 @@ void MainWindow ::cardClicked(){
                     "border-color: red;"
                 );
     }
+
+    if (!tab.movesEmpty())
+        ui->back->setEnabled(true);
 }
 
 int MainWindow::fromDeck(){
@@ -118,7 +239,6 @@ int MainWindow::fromTable(){
 // karty rozda na stol a zobrazi
 
 void MainWindow::deselect(){
-    std::cout << "deselect\n";
     selected.button     = nullptr;
     selected.card       = nullptr;
     selected.clicked    = false;
@@ -164,7 +284,7 @@ void MainWindow::updateTable(unsigned num){
         start = tab.tableSize(num) - 13;
 
     for (unsigned i = 0; i < 13; i++){ // i je iterator pre karty v tableau pile
-        std::cout << std::endl;
+        //std::cout << std::endl;
         if (i < tab.tableSize(num)){
             card = tab.getTableCard(num,i + start);
             if (card == nullptr){
@@ -209,6 +329,8 @@ void MainWindow::updateTable(unsigned num){
                 table[i]->hide();
         }
     }
+    return;
+    std::cout << num << "updated table\n";
 }
 
 // zobrazi deck podla stavu hry
@@ -292,12 +414,12 @@ void MainWindow::updateFoundation(){
 }
 
 void MainWindow::updateAll(){
-    std::cout << "------------------updatig all\n";
     updateDeck();
     updateFoundation();
     for (unsigned i = 1; i <= 7; ++i){
         updateTable(i);
     }
+    std::cout << "allupdated\n";
 }
 
 // nejake inicializacne zalezitost
@@ -311,6 +433,12 @@ void MainWindow::initUi(){
     ui->loadGame->setStyleSheet( "background: white;");
     ui->saveGame->setStyleSheet( "background: white;");
     ui->hint->setStyleSheet( "background: white;");
+    ui->back->setStyleSheet( "background: white;");
+    ui->loadGame->setEnabled(false);
+    ui->saveGame->setEnabled(false);
+    ui->hint->setEnabled(false);
+    ui->back->setEnabled(false);
+
     suit[0] = "spades.png";
     suit[1] = "hearts.png";
     suit[2] = "clubs.png";
